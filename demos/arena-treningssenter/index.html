@@ -26,9 +26,18 @@
   </div>
 
   <!-- PASTE VOICEFLOW EMBED CODE BELOW -->
-  <script type="text/javascript">
+<script type="text/javascript">
     (function(d, t) {
         var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+        
+        // Widget styling (lesbar CSS)
+        var customCSS = `
+          .vfrc-chat {
+            width: 400px !important;
+            height: 600px !important;
+          }
+        `;
+        
         v.onload = function() {
           window.voiceflow.chat.load({
             verify: { projectID: '688b441fc4336541b3310d9a' },
@@ -36,7 +45,19 @@
             versionID: 'production',
             voice: {
               url: "https://runtime-api.voiceflow.com"
-            }
+            },
+            
+          }).then(() => {
+            // Proaktive meldingsbobler (med liten delay)
+            setTimeout(() => {
+              if (window.voiceflow.chat.proactive) {
+                window.voiceflow.chat.proactive.clear();
+                window.voiceflow.chat.proactive.push(
+                  { type: 'text', payload: { message: 'Hei! 👋 Har du spørsmål?' } },
+                  { type: 'text', payload: { message: 'Klikk her for å chatte med oss!' } }
+                );
+              }
+            }, 1000);
           });
         }
         v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
